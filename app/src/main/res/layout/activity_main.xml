@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/mButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Pick a date" />
+
+    <ScrollView
+        android:id="@+id/mScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layoutR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="35dp" />
+
+            <ImageView
+                android:id="@+id/mImage"
+                android:layout_width="match_parent"
+                android:layout_height="450dp"
+                android:layout_below="@id/Title"
+                android:padding="7dp" />
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mImage"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+
+
