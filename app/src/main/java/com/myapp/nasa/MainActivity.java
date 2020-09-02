@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -33,6 +35,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ThreadFactory;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public ImageView mImage;
     public TextView title;
     public RelativeLayout RLayout;
+    public Button restart;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -63,11 +67,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mButton = findViewById(R.id.mButton);
         title = findViewById(R.id.Title);
         RLayout = findViewById(R.id.layoutR);
+        restart = findViewById(R.id.restart);
 
         RLayout.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
         mImage.setVisibility(View.GONE);
         textView.setVisibility(View.GONE);
+        restart.setVisibility(View.GONE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.nasa.gov/planetary/")
@@ -79,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mButton.setVisibility(View.GONE);
                 Calendar c = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
                         (DatePickerDialog.OnDateSetListener) MainActivity.this,
@@ -101,6 +106,14 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        int today_day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int today_month = Calendar.getInstance().get(Calendar.MONTH);
+        int today_year = Calendar.getInstance().get(Calendar.YEAR);
+        if (today_day < i2 && today_month <= i1+1 && today_year <= i) {
+            Toast.makeText(this, "Please choose a date before today", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mButton.setVisibility(View.GONE);
         Toast.makeText(this, "DATE SELECTED", Toast.LENGTH_SHORT).show();
         onButtonClickVisibility();
         getNasa(i, i1 + 1, i2);
@@ -129,15 +142,23 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Log.i("getNasa()", "setting content" + capture.getTitle());
                 textView.setText(content);
                 title.setText(TITLE);
+                restart.setVisibility(View.VISIBLE);
 
 
-                Handler threadHandler = new Handler();
+                /*Handler threadHandler = new Handler();
                 threadHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         putImageOn(capture.getLink());
                     }
-                });
+                });*/
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        putImageOn(capture.getLink());
+                    }
+                }).start();
+
 
                 Log.i("API CALLING", "SUCCESS");
             }
@@ -181,6 +202,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             e.printStackTrace();
         }
 
+    }
+
+    public void restartActivity(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

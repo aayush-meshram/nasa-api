@@ -46,6 +46,14 @@
                 android:layout_below="@id/mImage"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:textSize="20dp" />
+            <Button
+                android:id="@+id/restart"
+                android:text="Search for different dates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/content"
+                android:layout_alignParentRight="true"
+                android:onClick="restartActivity"/>
 
         </RelativeLayout>
 
