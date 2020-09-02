@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -73,14 +74,15 @@ public class MainActivity2 extends AppCompatActivity {
                     String nasa_id =myList.get(position).nasa_id;
                     String url = "https://images-api.nasa.gov/asset/"+nasa_id;
                     String img_url = getImageURL(url);
-
+                    Log.i("ONItemClick", "onItemClick: "+nasa_id);
+                    Toast.makeText(MainActivity2.this, "IDHAR AA GAYA"+nasa_id, Toast.LENGTH_SHORT).show();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             putImageOn(img_url);
+                            Log.i("PING PANG", "run: ");
                         }
                     });
-
                 }
             }
         });
