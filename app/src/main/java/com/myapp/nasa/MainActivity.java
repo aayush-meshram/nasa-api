@@ -144,14 +144,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 title.setText(TITLE);
                 restart.setVisibility(View.VISIBLE);
 
-
-                /*Handler threadHandler = new Handler();
-                threadHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        putImageOn(capture.getLink());
-                    }
-                });*/
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -206,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void restartActivity(View v) {
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void startSecondActivity(View v) {
+        Intent intent = new Intent(this, MainActivity2.class);
         startActivity(intent);
     }
 
