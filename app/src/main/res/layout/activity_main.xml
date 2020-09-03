@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/mButton"
+
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Pick a date" />
+        android:id="@+id/mButton"
+        android:src="@drawable/date_button"
+        android:layout_centerInParent="true"/>
 
     <ScrollView
         android:id="@+id/mScroll"
@@ -29,6 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:fontFamily="@font/open_sans"
+                android:text="Loading..."
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textSize="35dp" />
 
@@ -39,31 +42,44 @@
                 android:layout_below="@id/Title"
                 android:padding="7dp" />
 
+
             <TextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/mImage"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:fontFamily="@font/open_sans"
                 android:textSize="20dp" />
-            <Button
+
+            <ImageButton
                 android:id="@+id/restart"
-                android:text="Search for different dates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@drawable/select_option_150x66"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/content"
-                android:layout_alignParentRight="true"
                 android:onClick="restartActivity"/>
 
         </RelativeLayout>
 
     </ScrollView>
-    <Button
+
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:src="@drawable/image_button"
+        android:layout_below="@id/mButton"
+        android:id="@+id/task2"
+        android:layout_centerHorizontal="true"
+        android:onClick="startSecondActivity"/>
+
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/mButton"
-        android:onClick="startSecondActivity"/>
+        android:src="@drawable/button_apod"
+        android:layout_centerInParent="true"
+        android:id="@+id/apod" />
 </RelativeLayout>
 
 

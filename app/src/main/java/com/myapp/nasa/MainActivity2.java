@@ -77,13 +77,6 @@ public class MainActivity2 extends AppCompatActivity {
                     getImageURL(url);
                     Log.i("ONItemClick", "onItemClick: "+nasa_id);
                     Toast.makeText(MainActivity2.this, "IDHAR AA GAYA"+url, Toast.LENGTH_SHORT).show();
-                    /*new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.i("PING PANG", "run: ");
-                            putImageOn(thumb_url);
-                        }
-                    }).start();*/
                 }
             }
         });

@@ -17,7 +17,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,13 +47,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public static final String API_KEY = "LblBHpe6fyA2Fwneu0PHBKmXds3yPXoE3fz87lpV";
     public nasa_api nasa_api;
 
-    public Button mButton;
+    public ImageButton mButton;
 
     public TextView textView;
     public ImageView mImage;
     public TextView title;
     public RelativeLayout RLayout;
-    public Button restart;
+    public ImageButton restart;
+    public ImageButton mAPOD;
+    public ScrollView mScroll;
+    public ImageButton secondButton;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -68,12 +70,29 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         title = findViewById(R.id.Title);
         RLayout = findViewById(R.id.layoutR);
         restart = findViewById(R.id.restart);
+        mAPOD = findViewById(R.id.apod);
+        mScroll = findViewById(R.id.mScroll);
+        secondButton = findViewById(R.id.task2);
 
         RLayout.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
         mImage.setVisibility(View.GONE);
         textView.setVisibility(View.GONE);
         restart.setVisibility(View.GONE);
+        mButton.setVisibility(View.GONE);
+        mScroll.setVisibility(View.GONE);
+        secondButton.setVisibility(View.GONE);
+
+        mAPOD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mButton.setVisibility(View.VISIBLE);
+                secondButton.setVisibility(View.INVISIBLE);
+                mAPOD.setVisibility(View.INVISIBLE);
+                secondButton.setVisibility(View.INVISIBLE);
+
+            }
+        });
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.nasa.gov/planetary/")
@@ -85,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mScroll.setVisibility(View.VISIBLE);
+                Toast.makeText(MainActivity.this, "SHRU HUA KIYA DEKH", Toast.LENGTH_SHORT).show();
                 Calendar c = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
                         (DatePickerDialog.OnDateSetListener) MainActivity.this,
