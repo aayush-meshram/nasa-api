@@ -174,7 +174,6 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                     }).start();
 
-                    return;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -186,8 +185,6 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
         mQueue.add(request);
-
-        while (thumb_url != null);
     }
 
     public void makeApiCall(String query) {
