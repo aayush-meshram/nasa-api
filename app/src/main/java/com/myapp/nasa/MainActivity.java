@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     }
                 }).start();
 
+                Toast.makeText(MainActivity.this, "Press Retry to start again", Toast.LENGTH_SHORT).show();
 
             }
 

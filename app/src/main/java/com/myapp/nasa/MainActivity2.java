@@ -115,6 +115,7 @@ public class MainActivity2 extends AppCompatActivity {
                 if (msg.what == TRIGGER_AUTO_COMPLETE) {
                     if (!TextUtils.isEmpty(autoCompleteTextView.getText())) {
                         makeApiCall(autoCompleteTextView.getText().toString());
+                        //NOTIFYING AUTOCOMPLETE VIA HANDLER TO UPDATE LIST after TRIGGER_AUTO_COMPLETE milliseconds
                     }
                 }
                 return false;
@@ -153,7 +154,6 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
     }
-
 
     public void getImageURL(String URL)   {
         System.out.println(URL);
