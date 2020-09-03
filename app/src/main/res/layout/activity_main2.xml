@@ -19,5 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:id="@+id/mImage"
+        android:outlineAmbientShadowColor="@color/colorPrimaryDark"
+        android:outlineSpotShadowColor="@color/colorPrimaryDark"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

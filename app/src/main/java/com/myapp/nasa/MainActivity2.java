@@ -50,6 +50,7 @@ public class MainActivity2 extends AppCompatActivity {
     public List<nasaInfo> myList;
     public AutoSuggestAdapter autoSuggestAdapter;
     public Handler handler;
+    public String thumb_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +74,16 @@ public class MainActivity2 extends AppCompatActivity {
                 if (!myList.get(position).nasa_id.isEmpty()) {
                     String nasa_id =myList.get(position).nasa_id;
                     String url = "https://images-api.nasa.gov/asset/"+nasa_id;
-                    String img_url = getImageURL(url);
+                    getImageURL(url);
                     Log.i("ONItemClick", "onItemClick: "+nasa_id);
-                    Toast.makeText(MainActivity2.this, "IDHAR AA GAYA"+nasa_id, Toast.LENGTH_SHORT).show();
-                    new Thread(new Runnable() {
+                    Toast.makeText(MainActivity2.this, "IDHAR AA GAYA"+url, Toast.LENGTH_SHORT).show();
+                    /*new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            putImageOn(img_url);
                             Log.i("PING PANG", "run: ");
+                            putImageOn(thumb_url);
                         }
-                    });
+                    }).start();*/
                 }
             }
         });
@@ -97,6 +98,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
+                autoCompleteTextView.clearListSelection();
                 handler.removeMessages(TRIGGER_AUTO_COMPLETE);
                 handler.sendEmptyMessageDelayed(TRIGGER_AUTO_COMPLETE,
                         AUTO_COMPLETE_DELAY);
@@ -155,17 +157,31 @@ public class MainActivity2 extends AppCompatActivity {
 
     }
 
-    public String thumb_url;
-    public String getImageURL(String URL)   {
+
+    public void getImageURL(String URL)   {
+        System.out.println(URL);
         RequestQueue mQueue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject collection = response.getJSONObject("collection");
+                    Log.i("collection ->" ,"->"+collection);
                     JSONArray items = collection.getJSONArray("items");
+                    Log.i("items", "->"+items);
                     JSONObject thumb = items.getJSONObject(0);
-                    thumb_url = (String) thumb.get("href");
+                    Log.i("thumb->", "->"+thumb);
+                    thumb_url = (String) thumb.getString("href");
+                    thumb_url = "https://" + thumb_url.substring(7);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            putImageOn(thumb_url);
+                        }
+                    }).start();
+
+                    Log.i("thumb url->", "->"+ thumb_url);
+                    return;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -177,7 +193,9 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
         mQueue.add(request);
-        return thumb_url;
+
+        while (thumb_url != null);
+        Log.i("LINK BHEJ ->", "Link:"+thumb_url);
     }
 
     public void makeApiCall(String query) {
@@ -219,7 +237,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }
                 //NOTIFYING CHANGE DONE IN DATASET CHANGED
                 myList.addAll(stringList);
-                autoSuggestAdapter.setData(mList);
+                autoSuggestAdapter.setData(stringList);
                 autoSuggestAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {

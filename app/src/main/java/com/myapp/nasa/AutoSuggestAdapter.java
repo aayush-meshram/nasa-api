@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AutoSuggestAdapter extends ArrayAdapter<String> implements Filterable {
-    private List<String> mlistData;
+    private List<nasaInfo> mlistData;
 
     public AutoSuggestAdapter(@NonNull Context context, int resource) {
         super(context, resource);
         mlistData = new ArrayList<>();
     }
 
-    public void setData(List<String> list) {
+    public void setData(List<nasaInfo> list) {
         mlistData.clear();
         mlistData.addAll(list);
     }
@@ -32,11 +32,11 @@ public class AutoSuggestAdapter extends ArrayAdapter<String> implements Filterab
     @Nullable
     @Override
     public String getItem(int position) {
-        return mlistData.get(position);
+        return mlistData.get(position).title;
     }
 
     public String getObject(int position) {
-        return mlistData.get(position);
+        return mlistData.get(position).title;
     }
 
     @NonNull
