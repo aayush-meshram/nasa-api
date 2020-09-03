@@ -22,8 +22,8 @@ public class AutoSuggestAdapter extends ArrayAdapter<String> implements Filterab
     public void setData(List<nasaInfo> list) {
         mlistData.clear();
         List<String> mL = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++)
-            mL.add(mlistData.get(i).title);
+        /*for(int i = 0; i < list.size(); i++)
+            mL.add(mlistData.get(i).title);*/
         mlistData.addAll(list);
     }
 

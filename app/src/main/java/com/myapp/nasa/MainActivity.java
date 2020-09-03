@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         restart.setVisibility(View.GONE);
         mButton.setVisibility(View.GONE);
         mScroll.setVisibility(View.GONE);
-        secondButton.setVisibility(View.GONE);
+        secondButton.setVisibility(View.VISIBLE);
 
         mAPOD.setOnClickListener(new View.OnClickListener() {
             @Override
