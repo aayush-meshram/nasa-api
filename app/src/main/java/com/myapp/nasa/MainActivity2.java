@@ -2,6 +2,7 @@ package com.myapp.nasa;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -11,10 +12,10 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class MainActivity2 extends AppCompatActivity {
     public AutoSuggestAdapter autoSuggestAdapter;
     public Handler handler;
     public String thumb_url;
+    public ImageButton mRetry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class MainActivity2 extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.actv);
         mText = findViewById(R.id.mText);
         mImage = findViewById(R.id.mImage);
+        mRetry = findViewById(R.id.mRetry);
+        mRetry.setVisibility(View.GONE);
 
         myList = new ArrayList<>();
 
@@ -68,15 +72,17 @@ public class MainActivity2 extends AppCompatActivity {
         autoCompleteTextView.setThreshold(2);
         autoCompleteTextView.setAdapter(autoSuggestAdapter);
 
+
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 if (!myList.get(position).nasa_id.isEmpty()) {
+                    Toast.makeText(MainActivity2.this, "Loading image, please wait", Toast.LENGTH_SHORT).show();
+                    mRetry.setVisibility(View.VISIBLE);
+                    autoCompleteTextView.setVisibility(View.GONE);
                     String nasa_id =myList.get(position).nasa_id;
                     String url = "https://images-api.nasa.gov/asset/"+nasa_id;
                     getImageURL(url);
-                    Log.i("ONItemClick", "onItemClick: "+nasa_id);
-                    Toast.makeText(MainActivity2.this, "IDHAR AA GAYA"+url, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -117,12 +123,11 @@ public class MainActivity2 extends AppCompatActivity {
 
     }
 
-    public class Download extends AsyncTask<String, Void, Bitmap> {
+    public class Download12 extends AsyncTask<String, Void, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(String... urls) {
             try {
-                Log.i("DOWNLOAD", "TRY PART");
                 URL url = new URL(urls[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
@@ -139,9 +144,8 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     public void putImageOn(String url) {
-        Log.i("putImageOn", "iNTO iT");
         try {
-            Download download = new Download();
+            Download12 download = new Download12();
             Bitmap bit = download.execute(url).get();
             mImage.setImageBitmap(bit);
         } catch (Exception e) {
@@ -159,11 +163,8 @@ public class MainActivity2 extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject collection = response.getJSONObject("collection");
-                    Log.i("collection ->" ,"->"+collection);
                     JSONArray items = collection.getJSONArray("items");
-                    Log.i("items", "->"+items);
                     JSONObject thumb = items.getJSONObject(0);
-                    Log.i("thumb->", "->"+thumb);
                     thumb_url = (String) thumb.getString("href");
                     thumb_url = "https://" + thumb_url.substring(7);
                     new Thread(new Runnable() {
@@ -173,7 +174,6 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                     }).start();
 
-                    Log.i("thumb url->", "->"+ thumb_url);
                     return;
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -188,7 +188,6 @@ public class MainActivity2 extends AppCompatActivity {
         mQueue.add(request);
 
         while (thumb_url != null);
-        Log.i("LINK BHEJ ->", "Link:"+thumb_url);
     }
 
     public void makeApiCall(String query) {
@@ -201,7 +200,6 @@ public class MainActivity2 extends AppCompatActivity {
                 List<String> mList = new ArrayList<>();
                 try {
                     JSONObject collection = response.getJSONObject("collection");
-                    Log.i("IN THE ", "response");
                     JSONArray items = collection.getJSONArray("items");
 
                     for (int i = 0; i < 10; i++) {
@@ -216,13 +214,10 @@ public class MainActivity2 extends AppCompatActivity {
                         nasaInfo CONTENT = new nasaInfo(title, nasa_id);
                         CONTENT.title = title;
                         CONTENT.nasa_id = nasa_id;
-                        Log.i("TAAAG!", "onResponse: " + CONTENT.getTitle() + " id :" + CONTENT.getNasa_id());
                         CONTENT.setTitle(title);
                         CONTENT.setNasa_id(nasa_id);
                         stringList.add(CONTENT);
                         mList.add(title);
-                        Log.i("CHECKING STRINGLIST", "CONTENT " + CONTENT + " title: " + CONTENT.getTitle());
-                        Log.i("IN THE " + title, "title and nasa" + nasa_id + "content" + CONTENT);
                         System.out.println(stringList);
                     }
                 } catch (JSONException e) {
@@ -240,5 +235,10 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
         mQueue.add(request);
+    }
+
+    public void RestartApp(View v)  {
+        Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+        startActivity(intent);
     }
 }

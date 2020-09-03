@@ -22,4 +22,13 @@
         android:outlineAmbientShadowColor="@color/colorPrimaryDark"
         android:outlineSpotShadowColor="@color/colorPrimaryDark"
         android:layout_centerInParent="true"/>
+
+    <ImageButton
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:src="@drawable/retry_button"
+        android:id="@+id/mRetry"
+        android:layout_centerHorizontal="true"
+        android:onClick="RestartApp"
+        android:layout_below="@id/mImage"/>
 </RelativeLayout>

@@ -4,26 +4,19 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,10 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ThreadFactory;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void onClick(View view) {
                 mScroll.setVisibility(View.VISIBLE);
-                Toast.makeText(MainActivity.this, "SHRU HUA KIYA DEKH", Toast.LENGTH_SHORT).show();
                 Calendar c = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
                         (DatePickerDialog.OnDateSetListener) MainActivity.this,
@@ -130,20 +119,16 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         int today_day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         int today_month = Calendar.getInstance().get(Calendar.MONTH);
         int today_year = Calendar.getInstance().get(Calendar.YEAR);
-        if (today_day < i2 && today_month <= i1+1 && today_year <= i) {
-            Toast.makeText(this, "Please choose a date before today", Toast.LENGTH_SHORT).show();
+        if (today_day < i2 && today_month <= i1 + 1 && today_year <= i) {
             return;
         }
         mButton.setVisibility(View.GONE);
-        Toast.makeText(this, "DATE SELECTED", Toast.LENGTH_SHORT).show();
         onButtonClickVisibility();
         getNasa(i, i1 + 1, i2);
     }
 
     public void getNasa(int year, int month, int day) {
-        Log.i("getNasa()", "in the function");
         String date = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month, day);
-        Log.i("getNasa", "date: " + date);
         Call<nasa> call = nasa_api.getNasa("https://api.nasa.gov/planetary/apod?api_key=" + API_KEY + "&date=" + date);
         call.enqueue(new Callback<nasa>() {
             @Override
@@ -160,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 title.setVisibility(View.VISIBLE);
                 mImage.setVisibility(View.VISIBLE);
                 textView.setVisibility(View.VISIBLE);
-                Log.i("getNasa()", "setting content" + capture.getTitle());
                 textView.setText(content);
                 title.setText(TITLE);
                 restart.setVisibility(View.VISIBLE);
@@ -173,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 }).start();
 
 
-                Log.i("API CALLING", "SUCCESS");
             }
 
             @Override
@@ -189,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         @Override
         protected Bitmap doInBackground(String... urls) {
             try {
-                Log.i("DOWNLOAD", "TRY PART");
                 URL url = new URL(urls[0]);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
@@ -206,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     public void putImageOn(String url) {
-        Log.i("putImageOn", "iNTO iT");
         try {
             Download download = new Download();
             Bitmap bit = download.execute(url).get();

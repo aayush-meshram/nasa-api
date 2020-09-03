@@ -64,22 +64,23 @@
 
     </ScrollView>
 
+    <ImageButton
+        android:id="@+id/apod"
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/apod_button" />
 
     <ImageButton
         android:id="@+id/task2"
         android:layout_width="125dp"
         android:layout_height="45dp"
-        android:layout_below="@id/mButton"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
         android:onClick="startSecondActivity"
         android:src="@drawable/image_library" />
 
-    <ImageButton
-        android:id="@+id/apod"
-        android:layout_width="125dp"
-        android:layout_height="45dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/apod_button" />
 </RelativeLayout>
 
 
