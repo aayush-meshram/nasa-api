@@ -2,11 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:padding="30dp">
+
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:hint="Search"
         android:id="@+id/actv"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"/>
 
     <TextView
         android:id="@+id/mText"
@@ -17,11 +28,18 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         android:id="@+id/mImage"
         android:outlineAmbientShadowColor="@color/colorPrimaryDark"
         android:outlineSpotShadowColor="@color/colorPrimaryDark"
         android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/trial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mImage"
+        android:paddingBottom="40dp"/>
 
     <ImageButton
         android:layout_width="125dp"
@@ -30,5 +48,6 @@
         android:id="@+id/mRetry"
         android:layout_centerHorizontal="true"
         android:onClick="RestartApp"
-        android:layout_below="@id/mImage"/>
+        android:outlineSpotShadowColor="@color/white"
+        android:layout_below="@id/trial"/>
 </RelativeLayout>

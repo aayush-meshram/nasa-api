@@ -10,10 +10,12 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public ImageButton mAPOD;
     public ScrollView mScroll;
     public ImageButton secondButton;
+    public ProgressBar mProgress;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mAPOD = findViewById(R.id.apod);
         mScroll = findViewById(R.id.mScroll);
         secondButton = findViewById(R.id.task2);
+        mProgress = findViewById(R.id.progress_circular);
 
         RLayout.setVisibility(View.GONE);
         title.setVisibility(View.GONE);
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         mButton.setVisibility(View.GONE);
         mScroll.setVisibility(View.GONE);
         secondButton.setVisibility(View.VISIBLE);
+        mProgress.setVisibility(View.GONE);
 
         mAPOD.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             return;
         }
         mButton.setVisibility(View.GONE);
+        mProgress.setVisibility(View.VISIBLE);
         onButtonClickVisibility();
         getNasa(i, i1 + 1, i2);
     }
@@ -147,9 +153,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 mImage.setVisibility(View.VISIBLE);
                 textView.setVisibility(View.VISIBLE);
                 textView.setText(content);
+                mProgress.setVisibility(View.GONE);
                 title.setText(TITLE);
                 restart.setVisibility(View.VISIBLE);
 
+                Toast.makeText(MainActivity.this, "Loading Image, please wait", Toast.LENGTH_SHORT).show();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -194,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             Download download = new Download();
             Bitmap bit = download.execute(url).get();
             mImage.setImageBitmap(bit);
+            Toast.makeText(this, "Completed", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

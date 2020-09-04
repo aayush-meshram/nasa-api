@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class MainActivity2 extends AppCompatActivity {
     public Handler handler;
     public String thumb_url;
     public ImageButton mRetry;
+    public ProgressBar mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,9 @@ public class MainActivity2 extends AppCompatActivity {
         mText = findViewById(R.id.mText);
         mImage = findViewById(R.id.mImage);
         mRetry = findViewById(R.id.mRetry);
+        mProgress = findViewById(R.id.progress);
+
+        mProgress.setVisibility(View.GONE);
         mRetry.setVisibility(View.GONE);
 
         myList = new ArrayList<>();
@@ -77,8 +82,9 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 if (!myList.get(position).nasa_id.isEmpty()) {
-                    Toast.makeText(MainActivity2.this, "Loading image, please wait", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity2.this, "Loading image, please wait for a short while", Toast.LENGTH_SHORT).show();
                     mRetry.setVisibility(View.VISIBLE);
+                    mProgress.setVisibility(View.VISIBLE);
                     autoCompleteTextView.setVisibility(View.GONE);
                     String nasa_id =myList.get(position).nasa_id;
                     String url = "https://images-api.nasa.gov/asset/"+nasa_id;
@@ -149,6 +155,7 @@ public class MainActivity2 extends AppCompatActivity {
             Download12 download = new Download12();
             Bitmap bit = download.execute(url).get();
             mImage.setImageBitmap(bit);
+            mProgress.setVisibility(View.INVISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -156,7 +163,6 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     public void getImageURL(String URL)   {
-        System.out.println(URL);
         RequestQueue mQueue = Volley.newRequestQueue(this);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
@@ -215,7 +221,6 @@ public class MainActivity2 extends AppCompatActivity {
                         CONTENT.setNasa_id(nasa_id);
                         stringList.add(CONTENT);
                         mList.add(title);
-                        System.out.println(stringList);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
