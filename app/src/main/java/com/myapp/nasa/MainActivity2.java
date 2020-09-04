@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -154,7 +155,13 @@ public class MainActivity2 extends AppCompatActivity {
         try {
             Download12 download = new Download12();
             Bitmap bit = download.execute(url).get();
-            mImage.setImageBitmap(bit);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mImage.setImageBitmap(bit);
+                }
+            });
             mProgress.setVisibility(View.INVISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
